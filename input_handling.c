@@ -64,7 +64,7 @@ char **line_tokenization(char *str)
 	args = malloc(sizeof(char *) * 2);
 	if (args == NULL)
 	{
-		dprintf(2, "L%u: Error: malloc failed\n", line_number);
+		dprintf(2, "Error: malloc failed\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -87,7 +87,7 @@ char **line_tokenization(char *str)
 			int_data = malloc(sizeof(value_t));
 			if (int_data == NULL)
 			{
-				dprintf(2, "L%u: Error: malloc failed\n", line_number);
+				dprintf(2, "Error: malloc failed\n");
 				exit(EXIT_FAILURE);
 			}
 			int_data->num = _atoi(token);
