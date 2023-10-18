@@ -21,7 +21,7 @@ int _isdigit(char *str)
 		{
 			valid = 0;
 			break;
-		}
+		}			
 		i++;
 	}
 	return (valid);

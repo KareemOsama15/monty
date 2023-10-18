@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 			f = get_opcode_instruction(opcode);
 			if (f == NULL)
 			{
-				dprintf(2, "L%u: unknown instruction %s\n", line_number, tokens[0]);
+				dprintf(STDERR_FILENO, "L%u: unknown instruction %s\n", line_number, tokens[0]);
 				exit(EXIT_FAILURE); }
 			else
 			{
@@ -47,7 +47,9 @@ int main(int argc, char *argv[])
 			free(tokens);
 		}
 		line_number++;
-		free(lineptr); }
-	fclose(test), free_stack(&stack, line_number);
+		free(lineptr);
+	}
+	fclose(test);
+	free_stack(&stack, line_number);
 	return (0);
 }

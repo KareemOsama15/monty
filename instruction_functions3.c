@@ -25,3 +25,58 @@ void swap(stack_t **stack, unsigned int line_number)
 	next->next = current;
 	*stack = next;
 }
+
+/**
+ * pchar - prints the char at the top of the stack, followed by a new line.
+ *
+ * @stack: the stack to be used
+ * @line_number: the instruction line number
+ *
+ * Return: no return
+*/
+void pchar(stack_t **stack, unsigned int line_number)
+{
+	int pchar_value = 0;
+
+	if (is_empty(*stack))
+	{
+		dprintf(STDERR_FILENO, "L%u: can't pchar, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	pchar_value = (*stack)->n;
+	if (pchar_value >= 0 && pchar_value <= 127)
+		printf("%c\n", pchar_value);
+	else
+	{
+		dprintf(STDERR_FILENO, "L%u: can't pchar, value out of range\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+}
+
+/**
+ * pstr - prints the string starting at the top of the stack,
+ * followed by a new line.
+ *
+ * @stack: the stack to be used
+ * @line_number: the instruction line number
+ *
+ * Return: no return
+*/
+void pstr(stack_t **stack, unsigned int line_number)
+{
+	stack_t *current;
+
+	if (is_empty(*stack))
+	{
+		dprintf(STDERR_FILENO, "L%u: can't pstr, stack empty\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	current = *stack;
+	while (current != NULL && current->n != 0)
+	{
+		if (current->n >= 0 && current->n <= 127)
+		putchar(current->n);
+		current = current->next;
+	}
+	putchar(10);
+}

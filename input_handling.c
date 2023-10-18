@@ -108,6 +108,9 @@ void (*get_opcode_instruction(char *opcode))(stack_t **, unsigned int)
 		{"sub", sub},
 		{"div", Div},
 		{"mul", mul},
+		{"mod", mod},
+		{"pchar", pchar},
+		{"pstr", pstr},
 		{NULL, NULL}
 	};
 	int i = 0;
