@@ -1,8 +1,12 @@
 #ifndef MONTY_H
 #define MONTY_H
 
+#define _GNU_SOURCE
+#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+#include <sys/types.h>
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -15,9 +19,9 @@
  */
 typedef struct stack_s
 {
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
 
 /**
@@ -30,8 +34,32 @@ typedef struct stack_s
  */
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
+
+/* utility functions */
+int _isdigit(char chr);
+int _atoi(const char *str);
+int _strcmp(char *s1, char *s2);
+
+/* main program functions*/
+void print_error(char *msg);
+int isreadable(char *file_path);
+char *read_file(FILE *file);
+char **line_tokenization(char *str);
+void (*get_opcode_instruction(char *opcode))(stack_t **, unsigned int);
+
+/* instruction functions */
+void push(stack_t **stack, unsigned int line_number);
+void pall(stack_t **stack, unsigned int line_number);
+void pint(stack_t **stack, unsigned int line_number);
+void pop(stack_t **stack, unsigned int line_number);
+void swap(stack_t **stack, unsigned int line_number);
+void add(stack_t **stack, unsigned int line_number);
+void nop(stack_t **stack, unsigned int line_number);
+
+/* global variable */
+extern int int_data;
 
 #endif
