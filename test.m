@@ -1,5 +1,6 @@
-push 2
-push 10
+# push 5
 push 3
-mod
 pall
+# push 8
+pall
+# pall
