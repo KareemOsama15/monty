@@ -14,9 +14,7 @@ int isreadable(char *file_path)
 	isreadable = access(file_path, R_OK);
 	if (isreadable == -1)
 	{
-		print_error("Error: Can't open file ");
-		print_error(file_path);
-		print_error("\n");
+		dprintf(2, "Error: Can't open file %s\n", file_path);
 		return (1);
 	}
 	return (0);
@@ -92,6 +90,9 @@ void (*get_opcode_instruction(char *opcode))(stack_t **, unsigned int)
 		{"swap", swap},
 		{"add", add},
 		{"nop", nop},
+		{"sub", sub},
+		{"div", Div},
+		{"mul", mul},
 		{NULL, NULL}
 	};
 	int i = 0;
@@ -99,7 +100,7 @@ void (*get_opcode_instruction(char *opcode))(stack_t **, unsigned int)
 	i = 0;
 	while (instructions[i].opcode)
 	{
-		if (_strcmp(opcode, instructions[i].opcode) == 0)
+		if (strcmp(opcode, instructions[i].opcode) == 0)
 			return (instructions[i].f);
 		i++;
 	}

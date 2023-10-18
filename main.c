@@ -17,6 +17,7 @@ int main(int argc, char *argv[])
 	char **tokens = NULL, *opcode = NULL;
 	void (*f)(stack_t **stack, unsigned int line_number) = NULL;
 	unsigned int line_number = 1;
+	stack_t *stack = NULL;
 
 	if (argc != 2)
 	{
@@ -31,7 +32,6 @@ int main(int argc, char *argv[])
 		lineptr = read_file(test);
 		if (lineptr == NULL)
 			break;
-		printf("%s", lineptr);
 		if (lineptr[0] != '\n')
 		{
 			tokens = line_tokenization(lineptr);
@@ -39,18 +39,11 @@ int main(int argc, char *argv[])
 			int_data = _atoi(tokens[1]);
 			f = get_opcode_instruction(opcode);
 			if (f == NULL)
-			{
-				print_error("L");
-				/* print_error(itoa(line_number, buffer, 10)); */
-				print_error(": unknown instruction\n");
-			}
+				dprintf(2, "L%u: unknown instruction\n", line_number);
 			else
-				f(NULL, line_number);
-			printf("0: %s\n", opcode);
-			printf("1: %d\n", int_data);
+				f(&stack, line_number);
 			free(tokens);
 		}
-		printf("===============================\n");
 		line_number++;
 		free(lineptr);
 	}

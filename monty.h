@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
+#include <stdbool.h>
+
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -58,6 +60,15 @@ void pop(stack_t **stack, unsigned int line_number);
 void swap(stack_t **stack, unsigned int line_number);
 void add(stack_t **stack, unsigned int line_number);
 void nop(stack_t **stack, unsigned int line_number);
+void mul(stack_t **stack, unsigned int line_number);
+void Div(stack_t **stack, unsigned int line_number);
+void sub(stack_t **stack, unsigned int line_number);
+
+bool isEmpty(stack_t *stack);
+int stack_size(stack_t *stack);
+void destroy(stack_t **stack, unsigned int line_number);
+
+
 
 /* global variable */
 extern int int_data;
