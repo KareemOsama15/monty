@@ -48,7 +48,7 @@ void pchar(stack_t **stack, unsigned int line_number)
 		printf("%c\n", pchar_value);
 	else
 	{
-		dprintf(STDERR_FILENO, "L%u: can't pchar, value out of range\n", line_number);
+		dprintf(2, "L%u: can't pchar, value out of range\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 }
