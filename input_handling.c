@@ -63,10 +63,15 @@ char **line_tokenization(char *str)
 
 	args = malloc(sizeof(char *) * 2);
 	if (args == NULL)
-		return (NULL);
+	{
+		dprintf(2, "L%u: Error: malloc failed\n", line_number);
+		exit(EXIT_FAILURE);
+	}
 
 	token = strtok(str, " \t\n");
 	args[0] = token;
+	if (token != NULL && token[0] == '#')
+		return (NULL);
 
 	token = strtok(NULL, " \t\n");
 	args[1] = token;
@@ -80,6 +85,11 @@ char **line_tokenization(char *str)
 		if (_isdigit(token))
 		{
 			int_data = malloc(sizeof(value_t));
+			if (int_data == NULL)
+			{
+				dprintf(2, "L%u: Error: malloc failed\n", line_number);
+				exit(EXIT_FAILURE);
+			}
 			int_data->num = _atoi(token);
 		}
 		else
