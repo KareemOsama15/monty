@@ -123,6 +123,6 @@ void mod(stack_t **stack, unsigned int line_number)
 		exit(EXIT_FAILURE);
 	}
 	result = (*stack)->next;
-	result->n = (*stack)->n % result->n;
+	result->n = result->n % (*stack)->n;
 	pop(stack, line_number);
 }
