@@ -3,15 +3,23 @@
 /**
 * _isdigit - checks the input character whether it is a digit or not
 *
-* @chr: pointer to user input
+* @str: pointer to user input
 *
 * Return: 1 on success, 0 on failure
 */
-int _isdigit(char chr)
+int _isdigit(char *str)
 {
-	if (chr >= 48 && chr <= 57)
-		return (1);
-	return (0);
+	int i = 0;
+
+	if (str[0] == '-')
+		i++;
+	while (str[i] != '\0')
+	{
+		if (str[i] <= 48 || str[i] >= 57)
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 /**

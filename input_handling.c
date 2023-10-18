@@ -14,7 +14,7 @@ int isreadable(char *file_path)
 	isreadable = access(file_path, R_OK);
 	if (isreadable == -1)
 	{
-		dprintf(2, "Error: Can't open file %s\n", file_path);
+		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", file_path);
 		return (1);
 	}
 	return (0);
@@ -42,6 +42,8 @@ char *read_file(FILE *file)
 	return (lineptr);
 }
 
+value_t *int_data = NULL;
+
 /**
  * line_tokenization - extract tokens from strings
  *
@@ -51,26 +53,33 @@ char *read_file(FILE *file)
 */
 char **line_tokenization(char *str)
 {
-	char **tokens, *token = NULL;
+	char **args, *token = NULL;
 
-	tokens = malloc(sizeof(char *) * 2);
-	if (tokens == NULL)
+	args = malloc(sizeof(char *) * 2);
+	if (args == NULL)
 		return (NULL);
 
 	token = strtok(str, " \t\n");
-	tokens[0] = token;
+	args[0] = token;
 
 	token = strtok(NULL, " \t\n");
-	if (token != NULL)
+	args[1] = token;
+
+	if (token == NULL)
 	{
-		if (_isdigit(token[0]))
-			tokens[1] = token;
-		else
-			tokens[1] = "-1";
+		int_data = NULL;
 	}
 	else
-		tokens[1] = "-1";
-	return (tokens);
+	{
+		if (_isdigit(token))
+		{
+			int_data = malloc(sizeof(value_t));
+			int_data->num = _atoi(token);
+		}
+		else
+			int_data = NULL;
+	}
+	return (args);
 }
 
 /**
@@ -100,7 +109,7 @@ void (*get_opcode_instruction(char *opcode))(stack_t **, unsigned int)
 	i = 0;
 	while (instructions[i].opcode)
 	{
-		if (strcmp(opcode, instructions[i].opcode) == 0)
+		if (_strcmp(opcode, instructions[i].opcode) == 0)
 			return (instructions[i].f);
 		i++;
 	}

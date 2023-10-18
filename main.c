@@ -1,7 +1,5 @@
 #include "monty.h"
 
-int int_data = 0;
-
 /**
  * main - Entry point of the program
  *
@@ -21,9 +19,8 @@ int main(int argc, char *argv[])
 
 	if (argc != 2)
 	{
-		print_error("USAGE: monty file\n");
-		exit(EXIT_FAILURE);
-	}
+		dprintf(STDERR_FILENO, "USAGE: monty file\n");
+		exit(EXIT_FAILURE); }
 	if (isreadable(file_path))
 		exit(EXIT_FAILURE);
 	test = fopen(file_path, "r");
@@ -36,18 +33,21 @@ int main(int argc, char *argv[])
 		{
 			tokens = line_tokenization(lineptr);
 			opcode = tokens[0];
-			int_data = _atoi(tokens[1]);
 			f = get_opcode_instruction(opcode);
 			if (f == NULL)
-				dprintf(2, "L%u: unknown instruction\n", line_number);
+			{
+				dprintf(STDERR_FILENO, "L%u: unknown instruction\n", line_number);
+				exit(EXIT_FAILURE); }
 			else
+			{
 				f(&stack, line_number);
+				free(int_data); }
 			free(tokens);
 		}
 		line_number++;
 		free(lineptr);
 	}
 	fclose(test);
-	(void) line_number, (void) opcode, (void) tokens, (void) f;
+	free_stack(&stack, line_number);
 	return (0);
 }

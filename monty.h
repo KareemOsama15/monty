@@ -8,6 +8,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <stdbool.h>
+#include <ctype.h>
 
 
 /**
@@ -40,13 +41,30 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
+/**
+ * struct value_s - structure for storing data
+ *
+ * @num: the data to be stored
+ *
+ * Description: structure for storing data
+*/
+typedef struct value_s
+{
+	int num;
+} value_t;
+
+/* global variable */
+extern value_t *int_data;
+
 /* utility functions */
-int _isdigit(char chr);
+int _isdigit(char *str);
 int _atoi(const char *str);
 int _strcmp(char *s1, char *s2);
+bool is_empty(stack_t *stack);
+int stack_size(stack_t *stack);
+void free_stack(stack_t **stack, unsigned int line_number);
 
 /* main program functions*/
-void print_error(char *msg);
 int isreadable(char *file_path);
 char *read_file(FILE *file);
 char **line_tokenization(char *str);
@@ -63,14 +81,5 @@ void nop(stack_t **stack, unsigned int line_number);
 void mul(stack_t **stack, unsigned int line_number);
 void Div(stack_t **stack, unsigned int line_number);
 void sub(stack_t **stack, unsigned int line_number);
-
-bool isEmpty(stack_t *stack);
-int stack_size(stack_t *stack);
-void destroy(stack_t **stack, unsigned int line_number);
-
-
-
-/* global variable */
-extern int int_data;
 
 #endif

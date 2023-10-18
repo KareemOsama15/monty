@@ -1,10 +1,9 @@
 pall
-push    
-// push 9
-// push 1 dsjd
-// push    1
-// push 5
-// pall
-// pop
-// pint
+push -1
+push 2
+push 3 dsjd
+push    5
+push 4
+sub
 pall
+
