@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 			f = get_opcode_instruction(opcode);
 			if (f == NULL)
 			{
-				dprintf(STDERR_FILENO, "L%u: unknown instruction\n", line_number);
+				dprintf(STDERR_FILENO, "L%u: unknown instruction %s\n", line_number, tokens[0]);
 				exit(EXIT_FAILURE); }
 			else
 			{
