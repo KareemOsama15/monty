@@ -48,7 +48,7 @@ char *read_file(FILE *file)
 	return (lineptr);
 }
 
-value_t *int_data = NULL;
+/*value_t *int_data = NULL;*/
 
 /**
  * line_tokenization - extract tokens from strings
