@@ -15,11 +15,11 @@ int _isdigit(char *str)
 		i++;
 	while (str[i] != '\0')
 	{
-		if (str[i] <= 48 || str[i] >= 57)
-			return (0);
+		if (str[i] >= 48 && str[i] <= 57)
+			return (1);
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 /**

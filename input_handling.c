@@ -11,6 +11,12 @@ int isreadable(char *file_path)
 {
 	int isreadable;
 
+	isreadable = access(file_path, F_OK);
+	if (isreadable == -1)
+	{
+		dprintf(STDERR_FILENO, "USAGE: monty file\n");
+		return (1);
+	}
 	isreadable = access(file_path, R_OK);
 	if (isreadable == -1)
 	{
