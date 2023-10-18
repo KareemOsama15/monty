@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 		if (lineptr[0] != '\n')
 		{
 			tokens = line_tokenization(lineptr);
-			if (tokens[0] == NULL)
+			if (tokens[0] == NULL || tokens[0][0] == '#')
 				continue;
 			opcode = tokens[0];
 			f = get_opcode_instruction(opcode);

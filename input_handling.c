@@ -70,8 +70,8 @@ char **line_tokenization(char *str)
 
 	token = strtok(str, " \t\n");
 	args[0] = token;
-	if (token != NULL && token[0] == '#' && args[0][0] == '#')
-		return (NULL);
+	/*if (token != NULL && token[0] == '#' && args[0][0] == '#')
+		return (NULL);*/
 
 	token = strtok(NULL, " \t\n");
 	args[1] = token;
