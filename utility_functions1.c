@@ -9,17 +9,22 @@
 */
 int _isdigit(char *str)
 {
-	int i = 0;
+	int i = 0, valid = 0;
 
 	if (str[0] == '-')
 		i++;
 	while (str[i] != '\0')
 	{
 		if (str[i] >= 48 && str[i] <= 57)
-			return (1);
+			valid = 1;
+		else
+		{
+			valid = 0;
+			break;
+		}			
 		i++;
 	}
-	return (0);
+	return (valid);
 }
 
 /**

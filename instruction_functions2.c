@@ -10,23 +10,16 @@
 */
 void add(stack_t **stack, unsigned int line_number)
 {
-	(void) stack;
-	(void) line_number;
-	/*printf("success call\n");*/
-}
+	stack_t *result;
 
-/**
- * nop - doesn’t do anything.
- *
- * @stack: the stack to be used
- * @line_number: the instruction line number
- *
- * Return: no return
-*/
-void nop(stack_t **stack, unsigned int line_number)
-{
-	(void) stack;
-	(void) line_number;
+	if (is_empty(*stack) || stack_size(*stack) < 2)
+	{
+		dprintf(STDERR_FILENO, "L%u: can't add, stack too short\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	result = (*stack)->next;
+	result->n += (*stack)->n;
+	pop(stack, line_number);
 }
 
 /**
@@ -67,7 +60,7 @@ void Div(stack_t **stack, unsigned int line_number)
 
 	if (is_empty(*stack) || stack_size(*stack) < 2)
 	{
-		dprintf(STDERR_FILENO, "L%u: can't sub, stack too short\n", line_number);
+		dprintf(STDERR_FILENO, "L%u: can't div, stack too short\n", line_number);
 		exit(EXIT_FAILURE);
 	}
 
