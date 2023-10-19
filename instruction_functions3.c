@@ -95,21 +95,28 @@ void rotl(stack_t **stack, unsigned int line_number)
 	stack_t *firstElement = *stack;
 	stack_t *newElement = NULL;
 
-	while (current->next != NULL)
-		current = current->next;
+	(void) line_number;
+	if (*stack == NULL)
+		return;
 
-	newElement = malloc(sizeof(stack_t));
-	if (!newElement)
+	if (stack_size(*stack) > 1)
 	{
-		dprintf(STDERR_FILENO, "L%u: Error: malloc failed\n", line_number);
-		exit(EXIT_FAILURE);
+		while (current->next != NULL)
+			current = current->next;
+
+		newElement = malloc(sizeof(stack_t));
+		if (!newElement)
+		{
+			dprintf(STDERR_FILENO, "Error: malloc failed\n");
+			exit(EXIT_FAILURE);
+		}
+		newElement->n = (*stack)->n;
+		newElement->next = NULL;
+		newElement->prev = current;
+		current->next = newElement;
+		*stack = (*stack)->next;
+		free(firstElement);
 	}
-	newElement->n = (*stack)->n;
-	newElement->next = NULL;
-	newElement->prev = current;
-	current->next = newElement;
-	*stack = (*stack)->next;
-	free(firstElement);
 }
 
 /**
@@ -125,21 +132,30 @@ void rotr(stack_t **stack, unsigned int line_number)
 	stack_t *lastElement = *stack;
 	stack_t *newElement = NULL, *temp = NULL;
 
-	while (lastElement->next != NULL)
-		lastElement = lastElement->next;
-	temp = lastElement->prev;
+	(void) line_number;
+	if (*stack == NULL)
+		return;
 
-	newElement = malloc(sizeof(stack_t));
-	if (!newElement)
+	if (stack_size(*stack) > 1)
 	{
-		dprintf(STDERR_FILENO, "L%u: Error: malloc failed\n", line_number);
-		exit(EXIT_FAILURE);
+		while (lastElement->next != NULL)
+			lastElement = lastElement->next;
+		temp = lastElement->prev;
+
+		newElement = malloc(sizeof(stack_t));
+		if (!newElement)
+		{
+			dprintf(STDERR_FILENO, "Error: malloc failed\n");
+			exit(EXIT_FAILURE);
+		}
+		newElement->n = lastElement->n;
+		newElement->next = *stack;
+		newElement->prev = NULL;
+
+		(*stack)->prev = newElement;
+		*stack = newElement;
+
+		temp->next = NULL;
+		free(lastElement);
 	}
-	newElement->n = lastElement->n;
-	newElement->next = *stack;
-	newElement->prev = NULL;
-	(*stack)->prev = newElement;
-	*stack = newElement;
-	temp->next = NULL;
-	free(lastElement);
 }
