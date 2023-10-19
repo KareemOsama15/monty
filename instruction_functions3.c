@@ -79,3 +79,67 @@ void pstr(stack_t **stack, unsigned int line_number)
 	}
 	printf("\n");
 }
+
+/**
+ * rotl - function make top element of the stack becomes the last one,
+ * and the second top element of the stack becomes the first one
+ *
+ * @stack: the stack to be used
+ * @line_number: the instruction line number
+ *
+ * Return: no return
+*/
+void rotl(stack_t **stack, unsigned int line_number)
+{
+	stack_t *current = *stack;
+	stack_t *firstElement = *stack;
+	stack_t *newElement = NULL;
+
+	while (current->next != NULL)
+		current = current->next;
+
+	newElement = malloc(sizeof(stack_t));
+	if (!newElement)
+	{
+		dprintf(STDERR_FILENO, "L%u: Error: malloc failed\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	newElement->n = (*stack)->n;
+	newElement->next = NULL;
+	newElement->prev = current;
+	current->next = newElement;
+	*stack = (*stack)->next;
+	free(firstElement);
+}
+
+/**
+ * rotr - function make The last element of the stack
+ *  becomes the top element of the stack
+ * @stack: the stack to be used
+ * @line_number: the instruction line number
+ *
+ * Return: no return
+*/
+void rotr(stack_t **stack, unsigned int line_number)
+{
+	stack_t *lastElement = *stack;
+	stack_t *newElement = NULL, *temp = NULL;
+
+	while (lastElement->next != NULL)
+		lastElement = lastElement->next;
+	temp = lastElement->prev;
+
+	newElement = malloc(sizeof(stack_t));
+	if (!newElement)
+	{
+		dprintf(STDERR_FILENO, "L%u: Error: malloc failed\n", line_number);
+		exit(EXIT_FAILURE);
+	}
+	newElement->n = lastElement->n;
+	newElement->next = *stack;
+	newElement->prev = NULL;
+	(*stack)->prev = newElement;
+	*stack = newElement;
+	temp->next = NULL;
+	free(lastElement);
+}

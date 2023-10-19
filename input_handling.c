@@ -48,7 +48,7 @@ char *read_file(FILE *file)
 	return (lineptr);
 }
 
-value_t *int_data = NULL;
+value_t int_data;
 
 /**
  * line_tokenization - extract tokens from strings
@@ -70,42 +70,54 @@ char **line_tokenization(char *str)
 
 	token = strtok(str, " \t\n");
 	args[0] = token;
-	/*if (token != NULL && token[0] == '#' && args[0][0] == '#')
-		return (NULL);*/
 
 	token = strtok(NULL, " \t\n");
 	args[1] = token;
 
 	if (token == NULL)
 	{
-		int_data = NULL;
+		int_data.num = INT_MIN;
 	}
 	else
 	{
 		if (_isdigit(token))
-		{
-			int_data = malloc(sizeof(value_t));
-			if (int_data == NULL)
-			{
-				dprintf(2, "Error: malloc failed\n");
-				exit(EXIT_FAILURE);
-			}
-			int_data->num = _atoi(token);
-		}
+			int_data.num = _atoi(token);
 		else
-			int_data = NULL;
+			int_data.num = INT_MIN;
 	}
 	return (args);
 }
 
 /**
- * get_opcode_instruction - matches the opcode to the corresponding function
+ * run_opcode - get and run fuction related to the opcode
+ *
+ * @opcode: the opcode to be matched
+ * @stack: the stack to be used
+ * @line_number: the instruction line number
+ *
+ * Return: no return
+*/
+void run_opcode(char *opcode, unsigned int line_number, stack_t **stack)
+{
+	void (*get_opcode)(stack_t **stack, unsigned int line_number) = NULL;
+
+	get_opcode = check_opcode_instruction(opcode);
+	if (get_opcode == NULL)
+	{
+		dprintf(2, "L%u: unknown instruction %s\n", line_number, opcode);
+		exit(EXIT_FAILURE);
+	}
+	get_opcode(stack, line_number);
+}
+
+/**
+ * check_opcode_instruction - matches the opcode to the corresponding function
  *
  * @opcode: the opcode to be matched
  *
  * Return: the fuction related to the opcode
-*/
-void (*get_opcode_instruction(char *opcode))(stack_t **, unsigned int)
+ */
+void (*check_opcode_instruction(char *opcode))(stack_t **, unsigned int)
 {
 	instruction_t instructions[] = {
 		{"push", push},
@@ -121,11 +133,14 @@ void (*get_opcode_instruction(char *opcode))(stack_t **, unsigned int)
 		{"mod", mod},
 		{"pchar", pchar},
 		{"pstr", pstr},
+		{"rotl", rotl},
+		{"rotr", rotr},
+		{"queue", queue},
+		{"stack", stack},
 		{NULL, NULL}
 	};
 	int i = 0;
 
-	i = 0;
 	while (instructions[i].opcode)
 	{
 		if (_strcmp(opcode, instructions[i].opcode) == 0)

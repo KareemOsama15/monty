@@ -9,6 +9,7 @@
 #include <sys/types.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <limits.h>
 
 
 /**
@@ -45,16 +46,17 @@ typedef struct instruction_s
  * struct value_s - structure for storing data
  *
  * @num: the data to be stored
- *
+ * @lifo: specify if push lifo or fifo
  * Description: structure for storing data
 */
 typedef struct value_s
 {
 	int num;
+	int lifo;
 } value_t;
 
 /* global variable */
-extern value_t *int_data;
+extern value_t int_data;
 
 /* utility functions */
 int _isdigit(char *str);
@@ -68,7 +70,9 @@ void free_stack(stack_t **stack, unsigned int line_number);
 int isreadable(char *file_path);
 char *read_file(FILE *file);
 char **line_tokenization(char *str);
-void (*get_opcode_instruction(char *opcode))(stack_t **, unsigned int);
+void (*check_opcode_instruction(char *opcode))(stack_t **, unsigned int);
+void run_opcode(char *tokens, unsigned int line_number, stack_t **stack);
+FILE *check_file(int argc, char *argv[]);
 
 /* instruction functions */
 void push(stack_t **stack, unsigned int line_number);
@@ -84,5 +88,11 @@ void sub(stack_t **stack, unsigned int line_number);
 void mod(stack_t **stack, unsigned int line_number);
 void pchar(stack_t **stack, unsigned int line_number);
 void pstr(stack_t **stack, unsigned int line_number);
+void rotr(stack_t **stack, unsigned int line_number);
+void rotl(stack_t **stack, unsigned int line_number);
+void queue(stack_t **stack, unsigned int line_number);
+void stack(stack_t **stack, unsigned int line_number);
+void push_stack(stack_t **stack, unsigned int line_number);
+void push_queue(stack_t **stack, unsigned int line_number);
 
 #endif

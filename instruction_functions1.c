@@ -10,24 +10,15 @@
 */
 void push(stack_t **stack, unsigned int line_number)
 {
-	stack_t *newElement = malloc(sizeof(stack_t));
-
-	if (!newElement)
-	{
-		dprintf(STDERR_FILENO, "L%u: Error: malloc failed\n", line_number);
-		exit(EXIT_FAILURE);
-	}
-	if (int_data == NULL)
+	if (int_data.num == INT_MIN)
 	{
 		dprintf(STDERR_FILENO, "L%u: usage: push integer\n", line_number);
 		exit(EXIT_FAILURE);
 	}
-	newElement->n = int_data->num;
-	newElement->prev = NULL;
-	newElement->next = *stack;
-	if (!is_empty(*stack))
-		(*stack)->prev = newElement;
-	*stack = newElement;
+	if (int_data.lifo == 1)
+		push_queue(stack, line_number);
+	else
+		push_stack(stack, line_number);
 }
 
 /**

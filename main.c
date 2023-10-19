@@ -1,6 +1,31 @@
 #include "monty.h"
 
 /**
+ * check_file - function check for file and argv
+ *
+ * @argc: arguments count
+ * @argv: array of the arguments
+ *
+ * Return: file
+*/
+FILE *check_file(int argc, char *argv[])
+{
+	FILE *fd;
+	char *file_path = argv[1];
+
+	if (argc != 2)
+	{
+		dprintf(STDERR_FILENO, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+	if (isreadable(file_path))
+		exit(EXIT_FAILURE);
+	fd = fopen(file_path, "r");
+
+	return (fd);
+}
+
+/**
  * main - Entry point of the program
  *
  * @argc: arguments count
@@ -10,44 +35,36 @@
 */
 int main(int argc, char *argv[])
 {
-	FILE *test = NULL;
-	char *file_path = argv[1], *lineptr = NULL;
-	char **tokens = NULL, *opcode = NULL;
-	void (*f)(stack_t **stack, unsigned int line_number) = NULL;
+	FILE *file = NULL;
+	char *lineptr = NULL, **tokens = NULL;
 	unsigned int line_number = 1;
 	stack_t *stack = NULL;
 
-	if (argc != 2)
-	{
-		dprintf(STDERR_FILENO, "USAGE: monty file\n");
-		exit(EXIT_FAILURE); }
-	if (isreadable(file_path))
-		exit(EXIT_FAILURE);
-	test = fopen(file_path, "r");
+	file = check_file(argc, argv);
 	while (1)
 	{
-		lineptr = read_file(test);
+		lineptr = read_file(file);
 		if (lineptr == NULL)
+		{
+			free(lineptr);
 			break;
+		}
 		if (lineptr[0] != '\n')
 		{
 			tokens = line_tokenization(lineptr);
 			if (tokens[0] == NULL || tokens[0][0] == '#')
+			{
+				free(lineptr);
+				free(tokens);
 				continue;
-			opcode = tokens[0];
-			f = get_opcode_instruction(opcode);
-			if (f == NULL)
-			{
-				dprintf(2, "L%u: unknown instruction %s\n", line_number, tokens[0]);
-				exit(EXIT_FAILURE); }
-			else
-			{
-				f(&stack, line_number);
-				free(int_data); }
+			}
+			run_opcode(tokens[0], line_number, &stack);
 			free(tokens);
 		}
 		line_number++;
-		free(lineptr); }
-	fclose(test), free_stack(&stack, line_number);
+		free(lineptr);
+	}
+	fclose(file);
+	free_stack(&stack, line_number);
 	return (0);
 }
