@@ -66,11 +66,6 @@ void pstr(stack_t **stack, unsigned int line_number)
 {
 	stack_t *current;
 
-	if (is_empty(*stack))
-	{
-		dprintf(STDERR_FILENO, "L%u: can't pstr, stack empty\n", line_number);
-		exit(EXIT_FAILURE);
-	}
 	current = *stack;
 	while (current != NULL && current->n > 0 && current->n <= 127)
 	{
