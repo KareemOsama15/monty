@@ -14,7 +14,7 @@ int isreadable(char *file_path)
 	isreadable = access(file_path, F_OK);
 	if (isreadable == -1)
 	{
-		dprintf(STDERR_FILENO, "USAGE: monty file\n");
+		dprintf(STDERR_FILENO, "Error: Can't open file %s\n", file_path);
 		return (1);
 	}
 	isreadable = access(file_path, R_OK);

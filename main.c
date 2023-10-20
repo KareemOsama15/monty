@@ -56,6 +56,7 @@ int main(int argc, char *argv[])
 			{
 				free(lineptr);
 				free(tokens);
+				line_number++;
 				continue;
 			}
 			run_opcode(tokens[0], line_number, &stack);
